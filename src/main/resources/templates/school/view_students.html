@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en"
+th:replace="~{base :: parent(~{::#content},~{::script})}"
+xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" data-th-href="@{'/css/output.css'}" />
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    rel="stylesheet" 
+    />
+   
+    <title>View Student</title>
+</head>
+
+<body>
+
+    <div id="content">
+        <div data-th-replace="~{school/student_modals :: student}"></div>
+        <div th:replace="~{school/sidebar :: school-sidebar}"></div>
+
+        <div class="pl-4 md:pl-64 pt-16">
+            <div>
+                <h1 class="text-black text-4xl font-serif font-bold dark:text-blue px-6">Welcome to View All Students</h1>
+            </div>
+            
+        
+            <div class="student_container p-5">
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        
+                    <div class="container mx-auto p-2">
+                        <div class="flex flex-col md:flex-row items-center justify-between bg-white dark:bg-gray-900 p-2 rounded-lg">
+                            <form class="py-2 w-full" data-th-object="${studentSearchForm}" data-th-action="@{'/school/student/view-students'}">
+                                <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-3 items-center">
+                                    <div class="w-full md:w-auto">
+                                        <select data-th-field="*{field}" id="countries_disabled" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                                            <option selected value="">Select field</option>
+                                            <option value="studentName">Name</option>
+                                            <option value="email">Email</option>
+                                            <option value="phone">Phone</option>
+                                        </select>
+                                    </div>
+                    
+                                    <label for="table-search" class="sr-only">Search</label>
+                                    <div class="relative w-full md:w-64">
+                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                            </svg>
+                                        </div>
+                                        <input data-th-field="*{value}" type="text" id="table-search-users" class="block p-1.5 pl-10 text-sm border border-gray-300 rounded-lg w-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Search for student">
+                                    </div>
+                    
+                                    <button type="submit" class="px-2 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200">
+                                        Search
+                                    </button>
+                                </div>
+                            </form>
+                    
+                            <div class="mt-2 md:mt-0">
+                                <button type="button" onclick="exportData()" class="px-2 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200">
+                                    Export
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+        
+                    <table id="student-table" data-th-if="${pageStudent.totalElements > 0}" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-4">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Name</th>
+                                <th scope="col" class="px-6 py-3">Phone</th>
+                                <th scope="col" class="px-6 py-3">Mdm Id</th>
+                                <th scope="col" class="px-6 py-3">Action</th>
+                            </tr>
+                        </thead>
+        
+                        <tbody>
+                            <tr th:each="s : ${pageStudent.content}" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                    <img data-th-src="@{*picture}" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQttE9sxpEu1EoZgU2lUF_HtygNLCaz2rZYHg&s'" class="w-10 h-10 rounded-full" alt="Student image">
+                                    <div class="ps-3">
+                                        <div class="text-base font-semibold" data-th-text="${s.studentName}">Neil Sims</div>
+                                        <div class="font-normal text-gray-500" data-th-text="*{s.studentEmail}">neil.sims@flowbite.com</div>
+                                    </div>
+                                </th>
+        
+                                <td class="px-6 py-4">
+                                    <i class="fa-solid fa-phone w-4 h-4"></i>
+                                    <span data-th-text="*{s.studentPhoneNumber}"></span>
+                                </td>
+        
+                                <td class="px-6 py-4">
+                                    <span data-th-text="*{s.student_mdm_id}"></span>
+                                </td>
+        
+                                <td class="px-6 py-4 flex space-x-2">
+                                    <button th:data-id="${s.studentId}" th:onclick="deleteStudent(this.getAttribute('data-id'))" class="text-red-600 hover:text-red-800">
+                                        <i class="fa-solid fa-trash w-6 h-6"></i>
+                                    </button>
+        
+                                    <a data-th-href="@{'/school/student/update-student-view/'+*{s.studentId}}" class="text-blue-600 hover:text-blue-800">
+                                        <i class="fa-solid fa-pen-to-square w-6 h-6"></i>
+                                    </a>
+        
+                                    <button th:data-id="${s.studentId}" 
+                                    th:onclick="loadStudentdata(this.getAttribute('data-id'))" class="text-green-600 hover:text-green-800">
+                                        <i class="fa-solid fa-eye w-6 h-6"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+
+                    <div data-th-if="${pageStudent.totalElements > 0}" 
+                        class="pagination_container bg-white dark:bg-gray-800 p-3 mt-4">
+                        <nav aria-label="Page navigation example">
+                            <ul class="flex items-center -space-x-px h-8 text-base">
+
+                                <li data-th-unless="${pageStudent.first}">
+                                    <a 
+                                        th:href="@{'/school/student/view-students(size=${pageSize}, page=${pageStudent.number - 1})'}" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        <span class="sr-only">Previous</span>
+                                        <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4" />
+                                        </svg>
+                                    </a>
+                                </li>
+                    
+                                <li data-th-each="index: ${#numbers.sequence(0,pageStudent.totalPages-1)}">
+                                    <a data-th-href="@{'/school/student/view-students?size='+${pageSize}+'&page='+${index}}" data-th-classappend="${index==pageStudent.number? 'bg-blue-100 dark:bg-gray-600' : 'bg-white dark:bg-gray-800'}" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        <span data-th-text="${index+1}"></span>
+                                    </a>
+                                </li>
+                    
+                                <li data-th-unless="${pageStudent.last}">
+                                    <a data-th-href="@{'/school/student/view-students?size='+${pageSize}+'&page='+${pageStudent.number+1}}"
+                                        class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        <span class="sr-only">Next</span>
+                                        <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+                                        </svg>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    
+
+                    <h1 class="text-5xl text-center dark:bg-gray-800 dark:text-white bg-white p-4"
+                        data-th-if="${pageStudent.totalElements<=0}">
+                        No result found
+                    </h1>
+             
+                </div>
+          
+        </div>
+        <!-- <div data-th-replace="~{school/student_modals :: student}"></div> -->
+       
+        </div>
+      
+
+    </div>
+    <script data-th-src="@{'/js/students.js'}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@linways/table-to-excel@1.0.4/dist/tableToExcel.min.js"></script>
+
+    
+    <script>
+        function exportData() {
+            TableToExcel.convert(document.getElementById("student-table"), {
+              name: "students.xlsx",
+              sheet: {
+                name: "Sheet 1",
+              },
+            });
+          }
+    </script>
+
+
+</body>
+
+</html>

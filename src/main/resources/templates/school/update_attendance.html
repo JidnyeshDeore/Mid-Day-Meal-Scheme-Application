@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" data-th-href="@{'/css/output.css'}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div th:replace="~{school/sidebar :: school-sidebar}"></div>
+
+    <div class="container mx-auto p-4 mt-14">
+        <h1 class="text-2xl font-bold text-center mb-4">Update Attendance</h1>
+
+            <!-- Send Email Button -->
+        <div class="flex justify-end mb-4">
+            <button 
+                id="sendEmailsButton"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onclick="sendDailyUpdates()">
+                Send Daily Emails
+            </button>
+        </div>
+
+        <!-- Student Table -->
+        <div class="overflow-x-auto">
+            <table class="min-w-full table-auto border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="border border-gray-300 px-4 py-2 text-left">Student Name</th>
+                        <th class="border border-gray-300 px-4 py-2 text-left">Roll No</th>
+                        <th class="border border-gray-300 px-4 py-2 text-center">Attendance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="student : ${studentsList}">
+                        <td class="border border-gray-300 px-4 py-2" th:text="${student.studentName}"></td>
+                        <td class="border border-gray-300 px-4 py-2" th:text="${student.student_Roll_No}"></td>
+                        <td class="border border-gray-300 px-4 py-2 text-center">
+                            <button 
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                th:onclick="showAttendanceModal([[${student.studentId}]])">
+                                Update Attendance
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="attendanceModal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75  flex justify-center items-center">
+        <div class="bg-white rounded-lg p-6 w-full sm:w-96">
+            <h2 class="text-xl font-bold mb-4">Update Attendance</h2>
+            <input type="hidden" id="studentId">
+
+            <!-- Date Picker -->
+            <div class="mb-4">
+                <label for="attendanceDate" class="block text-sm font-medium text-gray-700">Date</label>
+                <input type="date" id="attendanceDate" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm">
+            </div>
+
+            <!-- Attended Select -->
+            <div class="mb-4">
+                <label for="attended" class="block text-sm font-medium text-gray-700">Attended</label>
+                <select id="attended" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm">
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+            </div>
+
+            <!-- Received Meal Select -->
+            <div class="mb-4">
+                <label for="receivedMeal" class="block text-sm font-medium text-gray-700">Received Meal</label>
+                <select id="receivedMeal" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm">
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+            </div>
+
+            <div class="flex justify-end">
+                <button 
+                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
+                    onclick="updateAttendance()">
+                    Save
+                </button>
+                <button 
+                    class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                    onclick="closeAttendanceModal()">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showAttendanceModal(studentId) {
+            document.getElementById('studentId').value = studentId;
+            document.getElementById('attendanceModal').classList.remove('hidden');
+        }
+
+        function closeAttendanceModal() {
+            document.getElementById('attendanceModal').classList.add('hidden');
+        }
+
+        function updateAttendance() {
+            const studentId = document.getElementById('studentId').value;
+            const attended = document.getElementById('attended').value;
+            const receivedMeal = document.getElementById('receivedMeal').value;
+            const date = document.getElementById('attendanceDate').value;
+
+            if (!date) {
+                alert("Please select a date");
+                return;
+            }
+
+            const request = {
+                studentId: studentId,
+                attended: attended === 'true',
+                receivedMeal: receivedMeal === 'true',
+                date: date
+            };
+
+            axios.post('http://localhost:8081/school/attendance/update', request)
+                .then(response => {
+                    alert(response.data);
+                    closeAttendanceModal();
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert('Failed to update attendance: ' + error.response.data);
+                });
+        }
+
+        function sendDailyUpdates() {
+            if (confirm("Are you sure you want to send daily update emails to all students?")) {
+                axios.post('http://localhost:8081/school/sendDailyUpdates')
+                    .then(response => {
+                        alert("Daily update emails have been sent successfully!");
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        alert("Failed to send emails. Please try again.");
+                    });
+            }
+        }
+        
+    </script>
+</body>
+</html>

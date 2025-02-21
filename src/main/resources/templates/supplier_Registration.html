@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html
+    lang="en"  
+    xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supplier Registration</title>
+    <link rel="stylesheet" data-th-href="@{'/css/output.css'}"/>
+
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+</head>
+<body  >
+
+    <div data-th-replace="~{navbar :: navbar}" ></div>
+
+    <div class="text-center mt-10  py-6">
+        
+        <div>
+
+            <div class="max-w-4xl mx-auto font-[sans-serif] p-6">
+                <div class="text-center mb-11">
+                  <!-- <a 
+                    href="javascript:void(0)">
+                    <img data-th-src="@{'/images/school_image.jpg'}"
+                    alt="logo" 
+                    class='w-42 h-40 inline-block' />
+                  </a> -->
+                  <h2 class="text-gray-800 text-3xl font-extrabold">Supplier Registration Form</h2>
+                  <h4 class="text-gray-800 text-base font-semibold mt-6">Sign up  your Supplier with MDMS Application</h4>
+                </div>
+                
+
+              <div th:if="${message}" class="alert alert-success">
+                  <p th:text="${message}"></p>
+              </div>
+              
+
+
+                <form
+                  th:action="@{'/supplier-registration-processing'}"
+                  th:object="${supplierForm}"
+                  method="post"
+                  novalidate
+                >
+                  <div class="grid sm:grid-cols-2 gap-4">
+
+                    <div>
+                      <label class="text-gray-800 text-sm mb-2 block">Supplier Name</label>
+                      <input 
+                        name="supplierName" 
+                        type="text" 
+                        th:field="*{supplierName}"
+                        class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" 
+                        placeholder="Enter Supplier Name" />
+                    </div>
+
+                    <p 
+                      data-th-if="${#fields.hasErrors('supplierName')}"
+                      data-th-errors="*{supplierName}"
+                      class="text-red-600">
+                    </p>
+
+                    <div>
+                      <label class="text-gray-800 text-sm mb-2 block">Supplier Address</label>
+                      <input 
+                        name="supplierAddress" 
+                        type="text" 
+                        th:field="*{supplierAddress}"
+                        class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" 
+                        placeholder="Enter last name" />
+                    </div>
+
+                    <p 
+                      data-th-if="${#fields.hasErrors('supplierAddress')}"
+                      data-th-errors="*{supplierAddress}"
+                      class="text-red-600">
+                    </p>
+
+                    <div>
+                      <label class="text-gray-800 text-sm mb-2 block">Email Id</label>
+                      <input 
+                        name="supplierEmail" 
+                        type="text" 
+                        th:field="*{supplierEmail}"
+                        class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" 
+                        placeholder="Enter email" />
+                    </div>
+
+                    <p 
+                      data-th-if="${#fields.hasErrors('supplierEmail')}"
+                      data-th-errors="*{supplierEmail}"
+                      class="text-red-600">
+                    </p>
+
+                    <div>
+                      <label class="text-gray-800 text-sm mb-2 block">Contact Number.</label>
+                      <input 
+                        name="supplierContactNumber" 
+                        type="tel" 
+                        th:field="*{supplierContactNumber}"
+                        class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" 
+                        placeholder="Enter Contact number" />
+                    </div>
+
+                    <p 
+                      data-th-if="${#fields.hasErrors('supplierContactNumber')}"
+                      data-th-errors="*{supplierContactNumber}"
+                      class="text-red-600">
+                    </p>
+
+                    <div>
+                      <label class="text-gray-800 text-sm mb-2 block">Password</label>
+                      <input 
+                      name="supplierPassword" 
+                      type="password" 
+                      th:field="*{supplierPassword}"
+                      class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" 
+                      placeholder="Enter password" />
+                    </div>
+
+                    <p 
+                      data-th-if="${#fields.hasErrors('supplierPassword')}"
+                      data-th-errors="*{supplierPassword}"
+                      class="text-red-600">
+                    </p>
+
+                    <div>
+                      <label class="text-gray-800 text-sm mb-2 block">FSSAIRegistration Number</label>
+                      <input 
+                      name="FSSAIRegistrationNumber" 
+                      type="text" 
+                      th:field="*{FSSAIRegistrationNumber}"
+                      class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" 
+                      placeholder="Enter FSSAIRegistration " />
+                    </div>
+
+                      <p 
+                      data-th-if="${#fields.hasErrors('FSSAIRegistrationNumber')}"
+                      data-th-errors="*{FSSAIRegistrationNumber}"
+                      class="text-red-600">
+                    </p>
+                    
+                  </div>
+          
+                  <div class="!mt-12">
+
+                    <button 
+                        type="submit" 
+                        class="py-3.5 px-7 text-sm font-semibold tracking-wider rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
+                      Sign up
+                    </button>
+
+                    <a 
+                        type="button" 
+                        href="/supplier-login"
+                        class="py-3.5 px-7 text-sm font-semibold tracking-wider rounded-md text-white bg-green-600 hover:bg-green-900 focus:outline-none">
+                        <span>Already have Supplier Register!!</span>   
+                        Sign in
+                     </a>
+
+                  </div>
+
+                </form>
+              </div>
+
+
+        </div>
+
+   
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+    
+</body>
+</html>

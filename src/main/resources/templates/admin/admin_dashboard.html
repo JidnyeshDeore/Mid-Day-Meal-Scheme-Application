@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en"
+xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <th:block th:insert="~{admin/admin_base :: parent(link, script)}"></th:block>
+</head>
+<body>
+    <div
+    data-th-insert="~{admin/admin_navbar :: admin-navbar}">
+    </div>
+    <div
+    data-th-insert="~{admin/admin_sidebar :: admin-sidebar}">
+    </div>
+    
+    <script data-th-src="@{'/js/view-school.js'}" ></script>
+
+    <!-- <script data-th-src="@{'/js/view-supplier.js'}" ></script> -->
+</body>
+</html>

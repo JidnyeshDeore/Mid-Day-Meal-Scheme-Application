@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" data-th-href="@{'/css/output.css'}" />
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Student Form</title>
+</head>
+<body class="bg-gray-100">
+    <div id="content">
+        <div data-th-replace="~{school/sidebar::school-sidebar}"></div>
+    </div>
+
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-white shadow-lg rounded-lg p-10 max-w-3xl w-full mt-10">
+            <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">Student Update Form</h2>
+
+            <div data-th-replace="~{message::messageBox}"></div>
+
+            <form
+                th:action="@{'/school/student/update/'+${studentId}}"
+                th:object="${studentForm}"
+                method="post"
+                novalidate
+                class="space-y-6"
+            >
+                <div>
+                    <label for="student_Name" class="block text-sm font-medium text-gray-700">Student Name</label>
+                    <input 
+                        type="text" 
+                        id="student_Name" 
+                        th:field="*{student_Name}" 
+                        required 
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" 
+                        placeholder="Enter Student Name">
+                    <p 
+                        data-th-if="${#fields.hasErrors('student_Name')}"
+                        data-th-errors="*{student_Name}"
+                        class="text-red-600">
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="student_Email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input 
+                            type="email" 
+                            id="student_Email" 
+                            th:field="*{student_Email}"  
+                            required 
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" 
+                            placeholder="Enter Email">
+                        <p 
+                            data-th-if="${#fields.hasErrors('student_Email')}"
+                            data-th-errors="*{student_Email}"
+                            class="text-red-600">
+                        </p>
+                    </div>
+
+                
+                </div>
+
+                <div>
+                    <label for="student_Address" class="block text-sm font-medium text-gray-700">Address</label>
+                    <input 
+                        type="text" 
+                        id="student_Address" 
+                        th:field="*{student_Address}"  
+                        required 
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" 
+                        placeholder="Enter Address">
+                    <p 
+                        data-th-if="${#fields.hasErrors('student_Address')}"
+                        data-th-errors="*{student_Address}"
+                        class="text-red-600">
+                    </p>
+                </div>
+
+                <div>
+                    <label for="student_Phone_Number" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                    <input 
+                        type="tel" 
+                        id="student_Phone_Number" 
+                        th:field="*{student_Phone_Number}"  
+                        required 
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" 
+                        placeholder="Enter 10 Digit Phone Number">
+                    <p 
+                        data-th-if="${#fields.hasErrors('student_Phone_Number')}"
+                        data-th-errors="*{student_Phone_Number}"
+                        class="text-red-600">
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="student_Roll_No" class="block text-sm font-medium text-gray-700">Roll Number</label>
+                        <input 
+                            type="number" 
+                            id="student_Roll_No" 
+                            th:field="*{student_Roll_No}" 
+                            required 
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" 
+                            placeholder="Enter Roll Number">
+
+                    </div>
+
+                    <div>
+                        <label for="student_Age" class="block text-sm font-medium text-gray-700">Age</label>
+                        <input 
+                            type="number" 
+                            id="student_Age" 
+                            th:field="*{student_Age}" 
+                            required 
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" 
+                            placeholder="Enter Age">
+                        <p 
+                            data-th-if="${#fields.hasErrors('student_Age')}"
+                            data-th-errors="*{student_Age}"
+                            class="text-red-600">
+                        </p>
+                    </div>
+
+                    <div class="flex-1">
+                        <label for="student_Standard" class="block text-sm font-medium text-gray-700">Standard</label>
+                        <input type="number" id="student_Standard" th:field="*{student_Standard}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" placeholder="Enter Student Standard">
+                        <p 
+                        data-th-if="${#fields.hasErrors('student_Standard')}"
+                        data-th-errors="*{student_Standard}"
+                        class="text-red-600">
+                      </p>
+                    </div>
+
+
+                </div>
+
+                <div>
+                    <label for="student_Gender" class="block text-sm font-medium text-gray-700">Gender</label>
+                    <select 
+                        id="student_Gender" 
+                        th:field="*{student_Gender}" 
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <div>
+                        <label for="student_Parents_Name" class="block text-sm font-medium text-gray-700">Parents Name</label>
+                        <input 
+                            type="text" 
+                            id="student_Parents_Name" 
+                            th:field="*{student_Parents_Name}" 
+                            required 
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" 
+                            placeholder="Enter Parents Name">
+                        <p 
+                            data-th-if="${#fields.hasErrors('student_Parents_Name')}"
+                            data-th-errors="*{student_Parents_Name}"
+                            class="text-red-600">
+                        </p>
+                    </div>
+                 
+
+                    <div>
+                        <label for="student_Parents_Mobile_Number" class="block text-sm font-medium text-gray-700">Parents Mobile Number</label>
+                        <input 
+                            type="text" 
+                            id="student_Parents_Mobile_Number" 
+                            th:field="*{student_Parents_Mobile_Number}" 
+                            required 
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" 
+                            placeholder="Enter 10 Digit Mobile Number">
+                        <p 
+                            data-th-if="${#fields.hasErrors('student_Parents_Mobile_Number')}"
+                            data-th-errors="*{student_Parents_Mobile_Number}"
+                            class="text-red-600">
+                        </p>
+                    </div>
+
+                    <div>
+                        <label for="studentParentsEmail" class="block text-sm font-medium text-gray-700">Parents Email </label>
+                        <input 
+                            type="text" 
+                            id="studentParentsEmail" 
+                            th:field="*{studentParentsEmail}" 
+                            required 
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" 
+                            placeholder="Enter 10 Digit Mobile Number">
+                        <!-- <p 
+                            data-th-if="${#fields.hasErrors('studentParentsEmail')}"
+                            data-th-errors="*{studentParentsEmail}"
+                            class="text-red-600">
+                        </p> -->
+                    </div>
+                    
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="student_Height" class="block text-sm font-medium text-gray-700">Height (cm)</label>
+                        <input 
+                            type="number" 
+                            id="student_Height" 
+                            th:field="*{student_Height}" 
+                            required 
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" 
+                            placeholder="Enter Height in cm">
+                        <!-- <p 
+                            data-th-if="${#fields.hasErrors('student_Height')}"
+                            data-th-errors="*{student_Height}"
+                            class="text-red-600">
+                        </p> -->
+                    </div>
+
+                    <div>
+                        <label for="student_Weight" class="block text-sm font-medium text-gray-700">Weight (kg)</label>
+                        <input 
+                            type="number" 
+                            id="student_Weight" 
+                            th:field="*{student_Weight}" 
+                            required 
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" 
+                            placeholder="Enter Weight in kg">
+                        <!-- <p 
+                            data-th-if="${#fields.hasErrors('student_Weight')}"
+                            data-th-errors="*{student_Weight}"
+                            class="text-red-600">
+                        </p> -->
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <button 
+                        type="submit" 
+                        class="w-full bg-blue-600 text-white font-semibold py-3 rounded-md shadow-lg hover:bg-blue-700 transition duration-200">
+                        Update Student
+                    </button>
+
+                    <button 
+                        type="reset"
+                        class="w-full bg-red-600 text-black font-semibold py-3 rounded-md shadow-lg hover:bg-red-800 transition duration-200">
+                        Reset Student
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script data-th-src="@{'/js/students.js'}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@linways/table-to-excel@1.0.4/dist/tableToExcel.min.js"></script>
+</body>
+</html>

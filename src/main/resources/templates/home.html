@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html 
+lang="en"
+th:fragment="parent(script)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" data-th-href="@{'/css/output.css'}"/>
+
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+</head>
+<body class="dark:bg-gray-900 bg-gray-100 dark:text-white">
+
+    <div data-th-replace="~{navbar :: navbar}" ></div>
+    <div class="text-center mt-10">
+        <h1 class="mt-6">Hello</h1>
+
+   
+    </div>
+
+    <script data-th-src="@{'/js/theme.js'}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script data-th-src="@{'/js/students.js'}"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@linways/table-to-excel@1.0.4/dist/tableToExcel.min.js"></script>
+    
+</body>
+</html>

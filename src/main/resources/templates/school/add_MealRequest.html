@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" data-th-href="@{'/css/output.css'}" />
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Meal Request Form</title>
+</head>
+<body class="bg-gray-100">
+    <div id="content">
+        <div data-th-replace="~{school/sidebar::school-sidebar}"></div>
+    </div>
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-white shadow-lg rounded-lg p-10 max-w-3xl w-full mt-10">
+            <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">Meal Request Form</h2>
+
+            <div data-th-replace="~{message::messageBox}"></div>
+
+            <form
+            th:action="@{'/school/mealRequests/add'}"
+            th:object="${mealRequestForm}"
+            method="post"
+            novalidate
+            class="space-y-6"
+        >
+            <div id="mealItemsContainer">
+                <!-- Initial Item -->
+                <div class="flex items-center gap-2 mb-2">
+                    <input 
+                        type="text" 
+                        name="mealItems[0].name" 
+                        placeholder="Item Name" 
+                        required 
+                        class="w-1/2 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" 
+                    />
+                    <input 
+                        type="text" 
+                        name="mealItems[0].quantity" 
+                        placeholder="Quantity[kg/L]" 
+                     
+                        required 
+                        class="w-1/2 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" 
+                    />
+                </div>
+            </div>
+        
+            <!-- Add Another Item Button -->
+            <button type="button" onclick="addMealItem()" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-md hover:bg-blue-700">
+                Add Another Item
+            </button>
+        
+        
+
+
+                <!-- Nutritional Requirements -->
+                <div>
+                    <label for="nutritionalRequirements" class="block text-sm font-medium text-gray-700">Nutritional Requirements</label>
+                    <input 
+                        type="text" 
+                        id="nutritionalRequirements" 
+                        th:field="*{nutritionalRequirements}" 
+                        required 
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" 
+                        placeholder="E.g., Vegetarian">
+                    <p 
+                        data-th-if="${#fields.hasErrors('nutritionalRequirements')}"
+                        data-th-errors="*{nutritionalRequirements}"
+                        class="text-red-600">
+                    </p>
+                </div>
+
+                <!-- Delivery Date -->
+                <div>
+                    <label for="deliveryDate" class="block text-sm font-medium text-gray-700">Delivery Date</label>
+                    <input 
+                        type="date" 
+                        id="deliveryDate" 
+                        th:field="*{deliveryDate}" 
+                        required 
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    <p 
+                        data-th-if="${#fields.hasErrors('deliveryDate')}"
+                        data-th-errors="*{deliveryDate}"
+                        class="text-red-600">
+                    </p>
+                </div>
+
+                <!-- Contact Person -->
+                <div>
+                    <label for="contactPerson" class="block text-sm font-medium text-gray-700">Contact Person</label>
+                    <input 
+                        type="text" 
+                        id="contactPerson" 
+                        th:field="*{contactPerson}" 
+                        required 
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" 
+                        placeholder="Enter Contact Person">
+                    <p 
+                        data-th-if="${#fields.hasErrors('contactPerson')}"
+                        data-th-errors="*{contactPerson}"
+                        class="text-red-600">
+                    </p>
+                </div>
+
+                <!-- Contact Phone -->
+                <div>
+                    <label for="contactPhone" class="block text-sm font-medium text-gray-700">Contact Phone</label>
+                    <input 
+                        type="tel" 
+                        id="contactPhone" 
+                        th:field="*{contactPhone}" 
+                        required 
+                        pattern="\d{10}" 
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" 
+                        placeholder="Enter 10 Digit Phone Number">
+                    <p 
+                        data-th-if="${#fields.hasErrors('contactPhone')}"
+                        data-th-errors="*{contactPhone}"
+                        class="text-red-600">
+                    </p>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="mt-8">
+                    <button 
+                        type="submit" 
+                        class="w-full bg-blue-600 text-white font-semibold py-3 rounded-md shadow-lg hover:bg-blue-700 transition duration-200">
+                        Submit
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"></script>
+    <script>
+        function addMealItem() {
+            const container = document.getElementById('mealItemsContainer');
+            const newItemIndex = container.children.length; // Index starts at 0 for new items
+        
+            const newRow = document.createElement('div');
+            newRow.className = 'flex items-center gap-2 mb-2';
+        
+            newRow.innerHTML = `
+                <input 
+                    type="text" 
+                    name="mealItems[${newItemIndex}].name"
+                    placeholder="Item Name" 
+                    required
+                    class="w-1/2 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" 
+                />
+                <input 
+                    type="text" 
+                    name="mealItems[${newItemIndex}].quantity"  
+                    placeholder="Quantity" 
+                    required
+                    class="w-1/2 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" 
+                />
+            `;
+            container.appendChild(newRow);
+        }
+        
+        
+    </script>
+    
+</body>
+</html>

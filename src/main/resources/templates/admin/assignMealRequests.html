@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Assign Meal Requests</title>
+	<link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+	<th:block th:insert="~{admin/admin_base :: parent(link, script)}"></th:block>
+</head>
+
+<body class="bg-gray-100 text-gray-900">
+
+	<!-- Navbar -->
+	<div data-th-insert="~{admin/admin_navbar :: admin-navbar}"></div>
+
+	<!-- Container -->
+	<div class="container mx-auto mt-8 p-4">
+		<!-- Card -->
+		<div class="bg-white rounded-lg shadow-lg p-6">
+			<h2 class="text-xl font-bold mb-4 text-gray-800">Assign Meal Requests</h2>
+			<div id="recipients">
+				<table class="min-w-full table-auto border-collapse border border-gray-200">
+					<thead>
+						<tr class="bg-gray-100 text-gray-700">
+							<th class="border border-gray-300 px-4 py-2">Meal Request ID</th>
+							<th class="border border-gray-300 px-4 py-2">School</th>
+							<th class="border border-gray-300 px-4 py-2">Delivery Date</th>
+							<th class="border border-gray-300 px-4 py-2">Details</th>
+							<th class="border border-gray-300 px-4 py-2">Assign Supplier</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="mealRequest : ${mealRequests}" class="text-gray-700 hover:bg-gray-50">
+							<td class="border border-gray-300 px-4 py-2" th:text="${mealRequest.mealRequestId}"></td>
+							<td class="border border-gray-300 px-4 py-2" th:text="${mealRequest.school.school_Name}"></td>
+							<td class="border border-gray-300 px-4 py-2" th:text="${mealRequest.deliveryDate}"></td>
+							<td class="border border-gray-300 px-4 py-2" th:text="${mealRequest.nutritionalRequirements}"></td>
+							<td class="border border-gray-300 px-4 py-2">
+								<div class="flex items-center gap-2">
+									<select class="border rounded p-2 w-full" th:id="'supplier-' + ${mealRequest.mealRequestId}" th:name="supplierId">
+										<option th:each="supplier : ${suppliers}" th:value="${supplier.supplierId}" th:text="${supplier.supplierName}"></option>
+									</select>
+									<button th:attr="data-request-id=${mealRequest.mealRequestId}" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded assign-btn">Assign</button>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		document.querySelectorAll('.assign-btn').forEach(button => {
+			button.addEventListener('click', () => {
+				const requestId = button.getAttribute('data-request-id');
+				const supplierId = document.getElementById('supplier-' + requestId).value;
+
+				fetch('/admin/api/assignMealRequest', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						mealRequestId: requestId,
+						supplierId: supplierId,
+					}),
+				})
+				.then(response => {
+					if (response.ok) {
+						alert('Successfully assigned!');
+						location.reload();
+					} else {
+						alert('Failed to assign.');
+					}
+				});
+			});
+		});
+	</script>
+</body>
+</html>

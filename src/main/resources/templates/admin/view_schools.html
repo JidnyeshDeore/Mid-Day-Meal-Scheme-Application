@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>DataTables </title>
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel=" stylesheet">
+	<!--Replace with your tailwind.css once created-->
+
+
+	<!--Regular Datatables CSS-->
+	<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
+	<!--Responsive Extension Datatables CSS-->
+	<link href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css" rel="stylesheet">
+    <th:block th:insert="~{admin/admin_base :: parent(link, script)}"></th:block>
+	<style>
+		/*Overrides for Tailwind CSS */
+
+		/*Form fields*/
+		.dataTables_wrapper select,
+		.dataTables_wrapper .dataTables_filter input {
+			color: #010409;
+			/*text-gray-700*/
+			padding-left: 1rem;
+			/*pl-4*/
+			padding-right: 1rem;
+			/*pl-4*/
+			padding-top: .5rem;
+			/*pl-2*/
+			padding-bottom: .5rem;
+			/*pl-2*/
+			line-height: 1.25;
+			/*leading-tight*/
+			border-width: 2px;
+			/*border-2*/
+			border-radius: .25rem;
+			border-color: #101214;
+			/*border-gray-200*/
+			background-color: #1577c81c;
+			/*bg-gray-200*/
+		}
+
+
+		/*Row Hover*/
+		table.dataTable.hover tbody tr:hover,
+		table.dataTable.display tbody tr:hover {
+			background-color: #12171c;
+			/*bg-indigo-100*/
+		}
+
+		/*Pagination Buttons*/
+		.dataTables_wrapper .dataTables_paginate .paginate_button {
+			font-weight: 700;
+			/*font-bold*/
+			border-radius: .25rem;
+			/*rounded*/
+			border: 1px solid transparent;
+			/*border border-transparent*/
+		}
+
+		/*Pagination Buttons - Current selected */
+		.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+			color: #0c0707 !important;
+			/*text-white*/
+			box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
+			/*shadow*/
+			font-weight: 700;
+			/*font-bold*/
+			border-radius: .25rem;
+			/*rounded*/
+			background: #667eea !important;
+			/*bg-indigo-500*/
+			border: 1px solid transparent;
+			/*border border-transparent*/
+		}
+
+		/*Pagination Buttons - Hover */
+		.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+			color: #120909 !important;
+			/*text-white*/
+			box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
+			/*shadow*/
+			font-weight: 700;
+			/*font-bold*/
+			border-radius: .25rem;
+			/*rounded*/
+			background: #101116 !important;
+			/*bg-indigo-500*/
+			border: 1px solid transparent;
+			/*border border-transparent*/
+		}
+
+		/*Add padding to bottom border */
+		table.dataTable.no-footer {
+			border-bottom: 1px solid #070b0f;
+			/*border-b-1 border-gray-300*/
+			margin-top: 0.75em;
+			margin-bottom: 0.75em;
+		}
+
+		/*Change colour of responsive icon*/
+		table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before,
+		table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before {
+			background-color: #667eea !important;
+			/*bg-indigo-500*/
+		}
+
+		th {
+			text-align: left;
+			padding-left: 10px; /* Adds slight spacing from the left */
+		}
+	</style>
+
+
+
+</head>
+
+<body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
+
+	
+	<div data-th-replace="~{admin/school_modal :: school}"></div>
+    <div
+    data-th-insert="~{admin/admin_navbar :: admin-navbar}">
+    </div>
+	<!--Container-->
+	<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
+
+		<!-- Title
+		<h1 class="flex items-center font-sans font-bold break-normal text-indigo-500 px-2 py-8 text-xl md:text-2xl">
+			Responsive <a class="underline mx-2" href="https://datatables.net/">DataTables.net</a> Table
+		</h1> -->
+
+
+		<!--Card-->
+		<div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-gray-200">
+
+
+			<table id="example" class="min-w-full divide-y divide-gray-300 bg-gray-100 text-gray-900 shadow-md rounded-lg mt-2 pt-4">
+				<thead class="bg-gray-700 text-gray-200">
+					<tr>
+						<th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Name</th>
+						<th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Email</th>
+						<th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">MDM ID</th>
+						<th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Phone Number</th>
+						<th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Action</th>
+					</tr>
+				</thead>
+				<tbody class="divide-y divide-gray-300">
+					<tr th:each="school: ${schools}" class="hover:bg-gray-200">
+						<td class="px-6 py-4 text-sm font-medium text-gray-900" th:text="${school.school_Name}">Tiger Nixon</td>
+						<td class="px-6 py-4 text-sm text-gray-700" th:text="${school.school_Email}">System Architect</td>
+						<td class="px-6 py-4 text-sm text-gray-700" th:text="${school.mdm_Id}">Edinburgh</td>
+						<td class="px-6 py-4 text-sm text-gray-700" th:text="${school.school_Phone_Number}">61</td>
+
+						<td class="px-6 py-4 flex space-x-2 text-sm">
+							<!-- <button th:data-id="${school.studentId}" th:onclick="deleteStudent(this.getAttribute('data-id'))" class="text-red-600 hover:text-red-800">
+								<i class="fa-solid fa-trash w-6 h-6"></i>
+							</button>
+
+							<a data-th-href="@{'/school/student/update-student-view/'+*{school.studentId}}" class="text-blue-600 hover:text-blue-800">
+								<i class="fa-solid fa-pen-to-square w-6 h-6"></i>
+							</a> -->
+
+							<button 
+							th:data_id="${school.school_Id}"
+							th:onclick="loadSchooldata(this.getAttribute('data_id'))" class="text-green-600 hover:text-green-800">
+								<i class="fa-solid fa-eye w-6 h-6">view</i>
+							</button>
+						</td>
+					</tr>
+
+					<!-- Rest of your data (refer to https://datatables.net/examples/server_side/ for server side processing)-->
+
+				
+
+
+				</tbody>
+
+			</table>
+
+
+		</div>
+		<!--/Card-->
+
+	</div>
+	<!--/container-->
+
+
+
+
+	
+	<!-- jQuery -->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script data-th-src="@{'/js/view-school.js'}" ></script>
+	<!--Datatables -->
+	<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+
+
+	<!-- <script>
+		$(document).ready(function() {
+
+			var table = $('#example').DataTable({
+					responsive: true
+				})
+				.columns.adjust()
+				.responsive.recalc();
+		});
+	</script> -->
+
+</body>
+
+</html>

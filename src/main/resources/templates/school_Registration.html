@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html
+    lang="en"  
+    xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Registration</title>
+    <link rel="stylesheet" data-th-href="@{'/css/output.css'}"/>
+
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+</head>
+<body  >
+
+    <div data-th-replace="~{navbar :: navbar}" ></div>
+
+    <div class="text-center mt-10  py-6">
+        
+        <div>
+
+            <div class="max-w-4xl mx-auto font-[sans-serif] p-6">
+                <div class="text-center mb-11">
+                  <!-- <a 
+                    href="javascript:void(0)">
+                    <img data-th-src="@{'/images/school_image.jpg'}"
+                    alt="logo" 
+                    class='w-42 h-40 inline-block' />
+                  </a> -->
+                  <h2 class="text-gray-800 text-3xl font-extrabold">School Registration Form</h2>
+                  <h4 class="text-gray-800 text-base font-semibold mt-6">Sign up  your School with MDMS Application</h4>
+                </div>
+                
+
+              <div th:if="${message}" class="alert" 
+                th:classappend="${message.contains('Error') ? 'alert-danger' : 'alert-success'}">
+                <p th:text="${message}"></p>
+              </div>
+
+                <form 
+                  th:action="@{'/school-registration-processing'}"
+                  th:object="${schoolForm}"
+                  method="post"
+                  novalidate
+                >
+                  <div class="grid sm:grid-cols-2 gap-4">
+
+                    <div>
+                      <label class="text-gray-800 text-sm mb-2 block">School Name</label>
+                      <input 
+                        id="name" 
+                        type="text" 
+                        th:field="*{school_Name}"
+                        class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" 
+                        placeholder="Enter School Name" />
+
+                        <p 
+                          data-th-if="${#fields.hasErrors('school_Name')}"
+                          data-th-errors="*{school_Name}"
+                          class="text-red-600">
+                        </p>
+                    </div>
+
+                    <div>
+                      <label class="text-gray-800 text-sm mb-2 block">School Address</label>
+                      <input 
+                        id="school_Address" 
+                        type="text"
+                        th:field="*{school_Address}" 
+                        class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" 
+                        placeholder="Enter School Address " />
+
+                        <p 
+                          data-th-if="${#fields.hasErrors('school_Address')}"
+                          data-th-errors="*{school_Address}"
+                          class="text-red-600">
+                        </p>
+                    </div>
+
+                    <div>
+                      <label class="text-gray-800 text-sm mb-2 block">Enter School Email</label>
+                      <input 
+                        id="email" 
+                        type="email" 
+                        th:field="*{school_Email}" 
+                        class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" 
+                        placeholder="Enter  School Email" />
+
+                          <p 
+                          data-th-if="${#fields.hasErrors('school_Email')}"
+                          data-th-errors="*{school_Email}"
+                          class="text-red-600">
+                        </p>
+                    </div>
+
+
+                    <div>
+                      <label class="text-gray-800 text-sm mb-2 block">Enter School Mobile Number</label>
+                      <input 
+                        id="number" 
+                        type="tel" 
+                        th:field="*{school_Phone_Number}"
+                        class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" 
+                        placeholder="Enter mobile number" />
+                        
+                        <p 
+                          data-th-if="${#fields.hasErrors('school_Phone_Number')}"
+                          data-th-errors="*{school_Phone_Number}"
+                          class="text-red-600">
+                        </p>
+                    </div>
+
+                    <div>
+                      <label class="text-gray-800 text-sm mb-2 block">Enter School Password</label>
+                      <input 
+                      id="password" 
+                      type="password" 
+                      th:field="*{school_Password}"
+                      class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" 
+                      placeholder="Enter password" />
+                       <p 
+                          data-th-if="${#fields.hasErrors('school_Password')}"
+                          data-th-errors="*{school_Password}"
+                          class="text-red-600">
+                        </p>
+                    </div>
+
+                    <div>
+                      <label class="text-gray-800 text-sm mb-2 block">School-MDM Instructor Name</label>
+                      <input 
+                        id="school_mdm_Instructor" 
+                        type="text"
+                        th:field="*{school_mdm_Instructor}" 
+                        class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" 
+                        placeholder="School-MDM Instructor Name " />
+
+                        <p 
+                          data-th-if="${#fields.hasErrors('school_mdm_Instructor')}"
+                          data-th-errors="*{school_mdm_Instructor}"
+                          class="text-red-600">
+                        </p>
+                    </div>
+
+                    <div>
+                      <label class="text-gray-800 text-sm mb-2 block">School-Strength</label>
+                      <input 
+                        id="school_strength" 
+                        type="text"
+                        th:field="*{school_Strength}" 
+                        class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" 
+                        placeholder=" Enter School Strength " />
+
+                        <p 
+                          data-th-if="${#fields.hasErrors('school_Strength')}"
+                          data-th-errors="*{school_Strength}"
+                          class="text-red-600">
+                        </p>
+                    </div>
+
+
+
+                  </div>
+          
+                  <div class="!mt-12">
+
+                    <button 
+                        type="submit" 
+                        class="py-3.5 px-7 text-sm font-semibold tracking-wider rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
+                      Sign up
+                    </button>
+
+                    <a 
+                        type="button" 
+                        href="/school-login"
+                        class="py-3.5 px-7 text-sm font-semibold tracking-wider rounded-md text-white bg-green-600 hover:bg-green-900 focus:outline-none">
+                        <span>Already have School Register!!</span>   
+                        Sign in
+                     </a>
+
+                  </div>
+
+                </form>
+              </div>
+
+
+        </div>
+
+   
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+    
+</body>
+</html>

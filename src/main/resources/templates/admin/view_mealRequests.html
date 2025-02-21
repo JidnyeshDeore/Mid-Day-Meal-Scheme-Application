@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>DataTables </title>
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel=" stylesheet">
+	<!--Replace with your tailwind.css once created-->
+
+
+
+    <th:block th:insert="~{admin/admin_base :: parent(link, script)}"></th:block>
+
+
+
+</head>
+
+<body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
+
+	
+	<div data-th-replace="~{admin/meal_modal :: meal}"></div>
+    <div
+    data-th-insert="~{admin/admin_navbar :: admin-navbar}">
+    </div>
+	<!--Container-->
+	<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
+
+
+
+
+		<!--Card-->
+		<div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-gray-200">
+
+
+			<table id="example" class="min-w-full divide-y divide-gray-300 bg-gray-100 text-gray-900 shadow-md rounded-lg mt-2 pt-4">
+				<thead class="bg-gray-700 text-gray-200">
+					<tr>
+						<th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Items</th>
+						<th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Name</th>
+						<th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Date</th>
+						<th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Phone Number</th>
+						<!-- <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">status</th> -->
+                        <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Action</th>
+					</tr>
+				</thead>
+                <tbody class="divide-y divide-gray-300">
+					<tr th:each="mealRequests: ${mealRequests}" class="hover:bg-gray-200">
+						<td class="px-6 py-4 text-sm font-medium text-gray-900" th:text="${mealRequests.school.school_Name}">Tiger Nixon</td>
+						<td class="px-6 py-4 text-sm text-gray-700" th:text="${mealRequests.contactPerson}">System Architect</td>
+						<td class="px-6 py-4 text-sm text-gray-700" th:text="${mealRequests.deliveryDate}">Edinburgh</td>
+						<td class="px-6 py-4 text-sm text-gray-700" th:text="${mealRequests.contactPhone}">61</td>
+                        <!-- <td class="px-6 py-4 text-sm text-gray-700" th:text="${mealRequests.status}">61</td> -->
+                        <td class="px-6 py-4 flex space-x-2 text-sm">
+							<button 
+							th:data_id="${mealRequests.mealRequestId}"
+							th:onclick="loadMealData(this.getAttribute('data_id'))" class="text-green-600 hover:text-green-800">
+								<i class="fa-solid fa-eye w-6 h-6">view</i>
+							</button>
+						</td>
+                    </tr>
+                </tbody>
+			</table>
+
+
+		</div>
+		<!--/Card-->
+
+	</div>
+    <script data-th-src="@{'/js/view-meal.js'}" ></script>
+
+</body>
+
+</html>
